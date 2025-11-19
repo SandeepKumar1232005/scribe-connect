@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, User as UserIcon } from "lucide-react";
+import { Calendar, MessageSquare, User as UserIcon } from "lucide-react";
 
 interface Assignment {
   id: string;
@@ -113,15 +113,23 @@ const CustomerDashboard = ({ user }: { user: User | null }) => {
                     <Badge className={getStatusColor(assignment.status)}>{assignment.status}</Badge>
                   </div>
                   <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{assignment.description}</p>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <UserIcon className="h-4 w-4" />
-                      <span>{assignment.provider_profiles.profiles.full_name}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <UserIcon className="h-4 w-4" />
+                        <span>{assignment.provider_profiles.profiles.full_name}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        <span>{new Date(assignment.deadline).toLocaleDateString()}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>{new Date(assignment.deadline).toLocaleDateString()}</span>
-                    </div>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to={`/messages?assignment=${assignment.id}`}>
+                        <MessageSquare className="h-4 w-4 mr-1" />
+                        Chat
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               ))}
